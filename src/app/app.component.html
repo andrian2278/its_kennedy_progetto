@@ -1,0 +1,51 @@
+<nav style="border-bottom: solid 5px red;" class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand">
+    <div style="border: solid 2px black;" class="col">
+      <div class="row">
+        <div  class="col" style="background-color: white;border-right: 1px solid black;border-bottom: 1PX solid black;">        
+            <h2 style="color: rgb(212, 55, 55);">ITS</h2>    
+        </div>
+        <div class="col" style="background-color: #de1d1d; border-right: 1px solid black;border-bottom: 1PX solid black;">
+          <h2>Kennedy</h2>
+        </div>
+      </div>
+      <div class="col">
+      <div class="row" style="background-color: white;"> 
+        <DIV class="col">     
+            <h6 style="color: black;font-size: 10PX; margin-right: 30PX;">ACADEMY</h6></DIV> 
+            <div class="col">
+            <H6 style="color: black;font-size: 10PX;">INFORMATION</H6> 
+            <H6 style="color: red;font-size: 10PX;">COMMUNICATION</H6>
+            <H6 style="color: black;font-size: 10PX;">TECHNOLOGY</H6> 
+        </div> 
+      </div></div>
+    </div>
+    
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+
+      </li>
+      <li class="nav-item">
+
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
+      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"
+        (click)="_authService.logoutUser()">Logout</a>
+    </ul>
+  </div>
+
+</nav>
+<img src="assets/img/logo.png" style="width: 200px;" alt="">
+<div>
+  <router-outlet></router-outlet>
+</div>
