@@ -6,6 +6,7 @@ export class User{
     Cognome_Admin:string;
     SEDE_idSEDE:number;
     token:string;
+    RUOLO:string;
 }
 export class Token{
     token:string;

@@ -50,7 +50,6 @@ var connection = mysql.createPool({
     database: 'ITS_KENNEDY'
 });
 var saltRound = 10;
-var lastUserRegisterd = null;
 var app = fastify({
     logger: true,
     ignoreTrailingSlash: true
@@ -81,11 +80,11 @@ app.post('/api/register', function (request, reply) {
     var username = request.body.username;
     var password = request.body.password;
     var email = request.body.email;
-    var SEDE_idSEDE = request.body.SEDE_idSEDE;
     var Nome_Admin = request.body.Nome_Admin;
     var Cognome_Admin = request.body.Cognome_Admin;
+    var RUOLO = request.body.RUOLO;
     bcrypt.hash(password, saltRound).then(function (value) {
-        connection.query("INSERT INTO admin (username, password, email,Nome_Admin,Cognome_Admin,SEDE_idSEDE) VALUES(?,?,?,?,?,?)", [username, value, email, Nome_Admin, Cognome_Admin, SEDE_idSEDE], function (error, results, fields) {
+        connection.query("INSERT INTO admin (username, password, email,Nome_Admin,Cognome_Admin, RUOLO) VALUES(?,?,?,?,?,?)", [username, value, email, Nome_Admin, Cognome_Admin, RUOLO], function (error, results, fields) {
             reply.status(201).send({ result: true }); // 201 created
         })["catch"](function (reason) {
             reply.status(500).send({
@@ -101,13 +100,13 @@ var tokenJsonSchema = {
     required: ['username', 'password'],
     properties: {
         username: { type: 'string', minLength: 4 },
-        password: { type: 'string', minLength: 8 }
+        password: { type: 'string', minLength: 4 }
     }
 };
 app.post('/api/token', { schema: { body: tokenJsonSchema } }, function (request, reply) {
     // some code
     var model = request.body;
-    connection.query("SELECT username,Nome_Admin,Cognome_Admin , password FROM admin where username = ?", model.username, function (error, results, fields) {
+    connection.query("SELECT username,Nome_Admin,Cognome_Admin ,RUOLO, password FROM admin where username = ?", model.username, function (error, results, fields) {
         if (error) {
             reply.status(500).send({ error: error.message });
         }
@@ -122,7 +121,7 @@ app.post('/api/token', { schema: { body: tokenJsonSchema } }, function (request,
             bcrypt.compare(model.password, results[0].password, function (err, result) {
                 if (result) {
                     console.log(results[0]);
-                    var token = app.jwt.sign({ username: results[0].username, firstname: results[0].Nome_Admin, lastname: results[0].Cognome_Admin });
+                    var token = app.jwt.sign({ username: results[0].username, firstname: results[0].Nome_Admin, lastname: results[0].Cognome_Admin, role: results[0].RUOLO });
                     reply.send({ token: token });
                 }
                 else {

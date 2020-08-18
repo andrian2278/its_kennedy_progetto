@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
     this.userModul.Nome_Admin;
     this.userModul.Cognome_Admin;
     this.userModul.email;
-    this.userModul.SEDE_idSEDE;
+    this.userModul.RUOLO;
     if (confirm('Sei sicuro che vorrei aggiungere nuovo studente???')) {
       this.api.registerUser(this.userModul).subscribe(_ => {
         alert('Good Sei rigistrato')
