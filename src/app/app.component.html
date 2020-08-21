@@ -27,23 +27,41 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-
+  <div *ngIf="item.Admin_Status;else NonAdmin" class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul   class="navbar-nav mr-auto">
+      <li  class="nav-item">
+      <H5 style="color: #de1d1d;">Admin</H5>
       </li>
       <li class="nav-item">
 
       </li>
     </ul>
     <ul class="navbar-nav">
-      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
-      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/register" routerLinkActive="active">Register</a>
+      
+      
+      <a class="nav-link" *ngIf="!_authService.loggedIn()"  routerLink="/login" routerLinkActive="active">Login</a>
       <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"
-        (click)="_authService.logoutUser()">Logout</a>
+      (click)="_authService.logoutUser() ">Logout</a>
     </ul>
   </div>
+ 
+  <ng-template   #NonAdmin>
+    <ul   class="navbar-nav mr-auto">
+      <li  class="nav-item">
+      
+      </li>
+      <li class="nav-item">
 
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      
+      
+      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
+      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"
+        (click)="_authService.logoutUser() ">Logout</a>
+    </ul>
+      </ng-template>
 </nav>
 <div >
   <router-outlet></router-outlet>

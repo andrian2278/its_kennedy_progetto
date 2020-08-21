@@ -32,12 +32,14 @@ const routes: Routes = [
   },
   {
     path: 'register',
-    component: RegisterComponent
+    canActivate: [AuthGuard],
+    component: RegisterComponent,
+    data :{permittedRoles:['Admin','utente']}
   },
   {
     path: 'sedie',
     canActivate: [AuthGuard],
-    component: SedieComponent
+    component: SedieComponent,
   },
   { 
     path: 'admin', 

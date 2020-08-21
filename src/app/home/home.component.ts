@@ -1,3 +1,5 @@
+import { User } from './../models/User';
+import { AuthService } from './../service/auth.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +8,12 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-
-  constructor() { }
+ DateUser:User=new User();
+  constructor(public _authService:AuthService) {
+    }
+  
 
   ngOnInit(): void {
+ 
   }
-
 }

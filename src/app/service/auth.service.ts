@@ -1,3 +1,5 @@
+import { environment } from './../../environments/environment.prod';
+import { Roulo } from './../models/ruolo';
 import { User, Token } from './../models/User';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
@@ -13,17 +15,19 @@ export class AuthService {
   constructor(private http: HttpClient,private router:Router,public jwtHelper: JwtHelperService) { }
   
   registerUser(user) {
-    return this.http.post<User>(this.registerUrl, user)
+    return this.http.post<User>(`${environment._api}api/register`, user)
   }
   logUser(user) {
-    return this.http.post<User>(this.tokinUrl, user)
+    return this.http.post<User>(`${environment._api}api/token`, user)
   }
   loggedIn() {
-    return !!localStorage.getItem('token')    
+    return !!localStorage.getItem('token')
   }
+  
   logoutUser() {
     localStorage.removeItem('token')
     this.router.navigate(['/Home'])
+    window.location.reload()
   }
 
   getToken() {
@@ -32,7 +36,8 @@ export class AuthService {
   roleMatch(allowedRoles): boolean {
     var isMatch = false;
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-    var userRole = payLoad.role;
+    var userRole = payLoad.RUOLO;
+
     allowedRoles.forEach(element => {
       if (userRole == element) {
         isMatch = true;
@@ -40,5 +45,6 @@ export class AuthService {
       }
     });
     return isMatch;
+    
   }
   }

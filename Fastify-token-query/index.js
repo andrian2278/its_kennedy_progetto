@@ -106,7 +106,7 @@ var tokenJsonSchema = {
 app.post('/api/token', { schema: { body: tokenJsonSchema } }, function (request, reply) {
     // some code
     var model = request.body;
-    connection.query("SELECT username,Nome_Admin,Cognome_Admin ,RUOLO, password FROM admin where username = ?", model.username, function (error, results, fields) {
+    connection.query("SELECT username,idADMIN,Nome_Admin,Cognome_Admin ,RUOLO,Admin_Status, password FROM admin where username = ?", model.username, function (error, results, fields) {
         if (error) {
             reply.status(500).send({ error: error.message });
         }
@@ -121,7 +121,7 @@ app.post('/api/token', { schema: { body: tokenJsonSchema } }, function (request,
             bcrypt.compare(model.password, results[0].password, function (err, result) {
                 if (result) {
                     console.log(results[0]);
-                    var token = app.jwt.sign({ username: results[0].username, firstname: results[0].Nome_Admin, lastname: results[0].Cognome_Admin, role: results[0].RUOLO });
+                    var token = app.jwt.sign({ Username: results[0].username, Nome_Admin: results[0].Nome_Admin, Cognome_Admin: results[0].Cognome_Admin, RUOLO: results[0].RUOLO, idADMIN: results[0].idADMIN, Admin_Status: results[0].Admin_Status });
                     reply.send({ token: token });
                 }
                 else {
@@ -170,6 +170,65 @@ app.register(function (fastify, opts) {
             }); });
             return [2 /*return*/];
         });
+    });
+});
+// --------------------------------------------------------------------------------------------------------------------------------------
+app.get('/sede', function (request, reply) {
+    connection.query("select * from sede ", function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results);
+    });
+});
+app.get('/sede/admin/:id', function (request, reply) {
+    connection.query("select ad.Sede_IdSede,ad.Admin_IdAdmin,a.Nome_Admin,a.Cognome_Admin,a.Username,a.Email,a.RUOLO, s.SEDE,s.IdSede from admin_has_sede as ad inner join sede as s on ad.SEDE_idSEDE=s.idSEDE  inner join admin as a on ad.Admin_IdAdmin=a.IdAdmin where Admin_IdAdmin=?", [request.params.id], function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results);
+    });
+});
+app.post("/sede/admin", function (request, reply) {
+    var a = request.body;
+    connection.query("Insert into admin_has_sede (Admin_IdAdmin,Sede_IdSede)Values(?,?)", [a.Admin_IdAdmin, a.Sede_IdSede], function (error, results, fields) {
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.status(204).send(results);
+    });
+});
+// ---------------------------------------------------------------------------------------------------------------------------------------
+app.get('/admin', function (request, reply) {
+    connection.query("select * from admin ", function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results);
+    });
+});
+app.get('/admin/:id', function (request, reply) {
+    connection.query("select Nome_Admin,Cognome_Admin,Username,Email,RUOLO,Admin_Status from admin  where idADMIN=?", [request.params.id], function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        if (results.length == 0)
+            reply.status(404).send();
+        else
+            reply.send(results[0]);
     });
 });
 app.listen(3000, function (err, address) {

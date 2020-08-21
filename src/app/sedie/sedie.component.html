@@ -1,1 +1,65 @@
-<a [routerLink]="['/admin']">Admin Link</a>
+<div class="container">
+  <div *ngIf="DateUser.Admin_Status;else Admin" class="col">
+    <div   class="row">
+      <div style="margin-top: 30px;" *ngFor="let all of ListSedie" class="col-md-auto">
+          <button   class="card" style="width: 18rem;">
+            <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h2 class="card-text">{{all.SEDE}}</h2>
+            </div>
+            <button  type="button"  name="sedie_Id" [value]="all.idSEDE"  (click)="sedie_Id =Sedie_ID.value"#Sedie_ID id="sedie_Id" data-toggle="modal"
+              data-target="#staticBackdrop" class="btn btn-link">
+              <img style="width: 35px; " src="assets/img/settings.png" alt="" srcset="">
+            </button>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <ng-template   #Admin>
+        <div  class="col-md-auto" >
+          <div  class="row">
+            <div *ngFor="let s of S_acces" class="col-md-auto">
+            <button  class="card" style="width: 18rem;">
+              <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h2 class="card-text">{{s.SEDE}}</h2>
+              </div>
+            </button>
+          </div>
+        </div>
+      </div>
+      </ng-template>
+    
+  
+
+  <!-- Modal -->
+
+  <form name="insertForm" #f="ngForm" (ngSubmit)="f.form.valid && newUser()">
+    <div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1"
+      aria-labelledby="staticBackdropLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="staticBackdropLabel">Add Admin</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group col-md-4">
+              <label  for="inputState" >Admin</label>
+              <select [(ngModel)]="newAdmin.Admin_IdAdmin"  #Admin_Id="ngModel" id="inputState" class="form-control" [ngModelOptions]="{standalone: true}">
+                <option selected>Choose...</option>
+                <option [value]="a.idADMIN" *ngFor="let a of Users ">{{a.Nome_Admin}} {{a.Cognome_Admin}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Invio</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
