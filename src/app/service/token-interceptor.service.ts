@@ -21,7 +21,7 @@ export class TokenInterceptorService  implements HttpInterceptor {
                   err => {
                       if (err.status == 401){
                           localStorage.removeItem('token');
-                          this.router.navigateByUrl('/login');
+                          this.router.navigateByUrl('/Home/login');
                       }
                       else if(err.status == 403)
                       this.router.navigateByUrl('/forbidden');

@@ -10,7 +10,6 @@ import { Component,Input } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  DateUser: User = new User();
   title = 'kennedy';
   item: User=new User();
 
@@ -18,9 +17,8 @@ export class AppComponent {
 
   ngOnInit(): void {
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
-    this.DateUser = payLoad;
     
-     this._Db.getUser(payLoad.idADMIN).subscribe(data => {
+     this._Db.getAdminId(payLoad.idADMIN).subscribe(data => {
       this.item = data;
     });
   }

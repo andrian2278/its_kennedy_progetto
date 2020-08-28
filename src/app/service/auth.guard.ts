@@ -15,14 +15,14 @@ export class AuthGuard implements CanActivate,CanActivateChild {
         if(roles){
           if(this._authService.roleMatch(roles)) return true;
           else{
-            this._router.navigate(['/Home']);
+            alert('Non hai permesso')
             return false;
           }
         }
         return true;
       }
       else {
-        this._router.navigate(['/Home']);
+        this._router.navigate(['/Home/Kennedy']);
         return false;
       }
     }
@@ -34,7 +34,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
         if(roles){
           if(this._authService.roleMatch(roles)) return true;
           else{
-            this._router.navigate(['/forbidden']);
+            alert('Non hai permesso')
             return false;
           }
         }

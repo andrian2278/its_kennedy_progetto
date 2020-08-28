@@ -1,0 +1,251 @@
+<div class="container">
+  <div class="col">
+    <div style="margin-top: 20px;" class="row">
+      <h1>Studenti</h1>
+    </div>
+  </div>
+
+  <div class="row">
+
+    <div style="margin-bottom: 10px;" *ngIf="DateUser.Admin_Status;else NonAdmin" class="col">
+      <button style="margin-top: 10px;" class="btn btn-primary" type="button" data-toggle="collapse"
+        data-target="#newColapps" aria-expanded="false" aria-controls="newColapps">
+        New Corso
+      </button>
+      <div>
+        <form #f="ngForm" style="margin-top: 2px; margin-bottom: 30px;" class="collapse " id="newColapps"
+          (ngSubmit)="f.form.valid && AddCorso()">
+
+          <div class="card card-body col-5">
+            <div class="row">
+              <div class="col">
+                <label for="nameCorso">New Corso Name</label>
+              </div>
+            </div>
+            <input [(ngModel)]="newCorso.CORSO" #newcorso name="newcorso" id="corso" type="text">
+            <div style="margin-top: 10px;" class="row">
+              <div class="col">
+                <button type="submit" class="btn btn-success">Success</button>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+
+
+
+    </div>
+  </div>
+  <ng-template #NonAdmin>
+
+  </ng-template>
+  <div class="col">
+    <div class="row">
+
+
+
+      <div class="col-6">
+        <div class="row">
+          <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#filtroCollaps"
+            aria-expanded="false" aria-controls="collapseExample">
+            Filtre
+          </button>
+          <div style="margin-bottom: 10px;" class="row">
+            <div class="col">
+              <div class="collapse" id="filtroCollaps">
+                <div class="card card-body">
+                  <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="Nome" #Text aria-label=""
+                      aria-describedby="basic-addon1">
+                  </div>
+                  <div class="row">
+                    <div class="col-md-auto">
+                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreNome()]] "
+                        type="button">Nome</button>
+                    </div>
+                    <div class="col-md-auto">
+                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreCognome()]] "
+                        type="button">Cognome</button>
+                    </div>
+                    <div class="col-md-auto">
+                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreCorso()]] "
+                        type="button">Corso</button>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="row justify-content-end">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">
+            New Studente
+          </button>
+        </div>
+      </div>
+
+
+      <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Nome Cognome</th>
+            <th scope="col">Corso</th>
+            <th scope="col">Data di Nascita</th>
+            <th scope="col">Comune</th>
+            <th scope="col">Sigla</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let s of StudentsList">
+            <td>{{s.nome}} {{s.cognome}}</td>
+            <td>{{s.corso}}</td>
+            <td>{{s.data_nascita|date: 'dd-MM-yyyy'}}</td>
+            <td>{{s.comune}}</td>
+            <td>{{s.provincia_sigla}}</td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog "
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="staticBackdropLabel">Aggiungi studente</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+
+        <form name="insertForm" #f="ngForm" (ngSubmit)="f.form.valid && save()">
+          <div class="form-row">
+            <div class="col-md-12 mb-3">
+              <label for="Corso">Corso</label>
+              <select [(ngModel)]="newStudents.CORSO_idCORSO" [ngModelOptions]="{standalone: true}" #Corso="ngModel"
+                class="custom-select" id="corsoID" name="corso" required maxlength="45">
+                <option selected disabled>Choose...</option>
+                <option [value]="p.idCORSO" *ngFor='let p of ListCorsi'>{{p.CORSO}}
+              </select>
+              <div style="color: red;" *ngIf="Corso.invalid">
+                <div *ngIf="Corso.errors.required">
+                  Campo obbligatorio.
+                </div>
+
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="Nome">Nome</label>
+              <input type="text" [(ngModel)]="newStudents.nome" [ngModelOptions]="{standalone: true}" #nome="ngModel"
+                class="form-control" name="Nome" id="Nome" value="" required maxlength="45">
+              <div style="color: red;" *ngIf="nome.invalid">
+                <div *ngIf="nome.errors.required">
+                  Campo obbligatorio.
+                </div>
+
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="Cognome">Cognome</label>
+              <input type="text" [(ngModel)]="newStudents.cognome" [ngModelOptions]="{standalone: true}"
+                #Cognome="ngModel" class="form-control" id="Cognome" name="Cognome" value="" required maxlength="45">
+              <div style="color: red;" *ngIf="Cognome.invalid">
+                <div *ngIf="Cognome.errors.required">
+                  Campo obbligatorio.
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="form-row">
+
+            <div class="col-md-6 mb-3">
+              <label for="DatadiNascita">Data Di Nascita</label>
+              <input type="date" [(ngModel)]="newStudents.data_nascita" value="1999-02-01" #DatadiNascita="ngModel"
+                [ngModelOptions]="{standalone: true}" class="form-control" name="DatadiNascita" id="DatadiNascita"
+                required>
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="Luogodinascita">Luogo di Nascita </label>
+              <input type="text" class="form-control" [(ngModel)]="newStudents.luogo_nascita" #Luogodinascita="ngModel"
+                [ngModelOptions]="{standalone: true}" id="Luogodinascita" name="Luogodinascita" required maxlength="45">
+              <div style="color: red;" *ngIf="Luogodinascita.invalid">
+                <div *ngIf="Luogodinascita.errors.required">
+                  Campo obbligatorio.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label for="Comune">Comune</label>
+              <input type="text" [(ngModel)]="newStudents.comune" [ngModelOptions]="{standalone: true}"
+                #Comune="ngModel" class="form-control" name="Comune" id="Comune" value="" required maxlength="100">
+              <div style="color: red;" *ngIf="Comune.invalid">
+                <div *ngIf="Comune.errors.required">
+                  Campo obbligatorio.
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="Residenza">Via</label>
+              <input type="text" [(ngModel)]="newStudents.via" [ngModelOptions]="{standalone: true}"
+                #Residenza="ngModel" class="form-control" name="Residenza" id="Residenza" value="" required
+                maxlength="45">
+              <div style="color: red;" *ngIf="Residenza.invalid">
+                <div *ngIf="Residenza.errors.required">
+                  Campo obbligatorio.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-5 mb-3">
+              <label for="Civico">Civico</label>
+              <input type="text" [(ngModel)]="newStudents.civico" [ngModelOptions]="{standalone: true}"
+                #Civico="ngModel" class="form-control" name="Civico" id="Civico" value="" required maxlength="10">
+              <div style="color: red;" *ngIf="Civico.invalid">
+                <div *ngIf="Civico.errors.required">
+                  Campo obbligatorio.
+                </div>
+              </div>
+            </div>
+
+            <div class="col-md-3 mb-3">
+              <label for="Provincia">Province</label>
+              <input type="text" [(ngModel)]="newStudents.provincia_sigla" [ngModelOptions]="{standalone: true}"
+                #Provincia="ngModel" class="form-control" name="Provincia" id="Provincia" value="" required
+                maxlength="4">
+              <div style="color: red;" *ngIf="Provincia.invalid">
+                <div *ngIf="Provincia.errors.required">
+                  Campo obbligatorio.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-row">
+              <div class="col-md-6 mb-3">
+                <button type="button" class="btn btn-secondary  " data-dismiss="modal">Close</button>
+              </div>
+              <div class="col-md-6 mb-3"><button class="btn btn-primary" type="submit">Aggiungi</button>
+              </div>
+            </div>
+          </div>
+
+        </form>
+
+      </div>
+    </div>
+  </div>

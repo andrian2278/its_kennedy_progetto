@@ -9,16 +9,15 @@ import { JwtHelperService } from '@auth0/angular-jwt';
   providedIn: 'root'
 })
 export class AuthService {
-    private registerUrl="http://127.0.0.1:3000/api/register";
-    private tokinUrl="http://127.0.0.1:3000/api/token"
+   
 
   constructor(private http: HttpClient,private router:Router,public jwtHelper: JwtHelperService) { }
   
   registerUser(user) {
-    return this.http.post<User>(`${environment._api}api/register`, user)
+    return this.http.post<User>(`${environment._api}register`, user)
   }
   logUser(user) {
-    return this.http.post<User>(`${environment._api}api/token`, user)
+    return this.http.post<User>(`${environment._api}token`, user)
   }
   loggedIn() {
     return !!localStorage.getItem('token')
@@ -26,7 +25,7 @@ export class AuthService {
   
   logoutUser() {
     localStorage.removeItem('token')
-    this.router.navigate(['/Home'])
+    this.router.navigate(['/Home/Kennedy'])
     window.location.reload()
   }
 

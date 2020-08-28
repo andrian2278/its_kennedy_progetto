@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="row">
+    <div class="col" style="margin-top:30px;">
+
+
+
+      <div class="col">
+        <div style="margin-bottom: 5px;" class="row">
+          <div class="col-3"> <input class="form-control" type="text" name="search" [(ngModel)]="searchText"
+              autocomplete="off" placeholder="Start searching ">
+          </div>
+
+          <div class="col ">
+            <div class="d-flex flex-row-reverse "> <button type="button" class="btn btn-primary" [routerLink]="['/Home/admin/register']">
+                New Admin
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Status </th>
+            <th scope="col">Ruole</th>
+            <th scope="col">Nome Cognome</th>
+            <th scope="col">Email</th>
+            <th scope="col">Username</th>
+            <th scope="col">Info</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let a of ListAdmins">
+            <th scope="row">
+              <div *ngIf="a.Admin_Status;else NonStatus">
+                <div
+                  style="border: 2px  #7b920a; ;width: 25px;height: 25px; border-radius: 30px; background-color: green;">
+                </div>
+              </div>
+              <ng-template #NonStatus></ng-template>
+            </th>
+            <td>{{a.RUOLO}}</td>
+            <td>{{a.Nome_Admin}} {{a.Cognome_Admin}}</td>
+            <td>{{a.email}}</td>
+            <td>{{a.username}}</td>
+            <td><button [routerLink]="[ a.idADMIN]" style="border-radius: 50px;" type="button"
+                class="btn btn-link"><img style="width: 25px;" src="assets/img/info.png" alt=""></button></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

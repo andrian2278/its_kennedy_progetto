@@ -21,7 +21,7 @@ private _api="http://127.0.0.1:3000/"
     this.loginModule.username;
     this.loginModule.password;
     
-    if (confirm('Sei sicuro che vorrei aggiungere nuovo studente???')) {
+    if (confirm('Cioa')) {
       this.api.logUser(this.loginModule).subscribe(res => {
         
         localStorage.setItem('token',res.token)
@@ -29,7 +29,7 @@ private _api="http://127.0.0.1:3000/"
        
        this.authrizato=true     
         if (this.authrizato==true) {
-         window.location.assign(`${environment.apiUrl}/sedie`)
+         window.location.assign(`${environment.apiUrl}Home/sedie`)
          
        }
       });  

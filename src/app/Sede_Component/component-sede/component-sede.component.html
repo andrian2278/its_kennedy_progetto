@@ -1,0 +1,82 @@
+<div class="container">
+    <div class="col">
+        <div *ngIf="DateUser.Admin_Status;else NonAdmin" class="row">
+
+          <div style="margin-top: 30px;"  class="col-md-auto">
+              <button  [routerLink]="['/Home/sedie/'+id+'/Studenti']" class="card" style="width: 18rem;">
+                <img src="assets/img/studenti.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h2 class="card-text">Studenti</h2>
+                </div>
+                <button  type="button"  name="sedie_Id"   #Sedie_ID id="sedie_Id" data-toggle="modal"
+                  data-target="#staticBackdrop" class="btn btn-link">
+                  <img style="width: 35px; " src="assets/img/settings.png" alt="" srcset="">
+                </button>
+              </button>
+            </div>
+    
+          <div style="margin-top: 30px;"  class="col-md-auto">
+              <button [routerLink]="['/Home/sedie/'+id+'/pc']"  class="card" style="width: 18rem;">
+                <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h2 class="card-text">Computer</h2>
+                </div>
+                <button  type="button"  name="sedie_Id"   #Sedie_ID id="sedie_Id" data-toggle="modal"
+                  data-target="#staticBackdrop" class="btn btn-link">
+                  <img style="width: 35px; " src="assets/img/settings.png" alt="" srcset="">
+                </button>
+              </button>
+            </div>
+    
+            <div style="margin-top: 30px;"  class="col-md-auto">
+                <button [routerLink]="['/Home/sedie/'+id+'/movumenti']"  class="card" style="width: 18rem;">
+                  <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+                  <div class="card-body">
+                    <h2 class="card-text">Movumenti</h2>
+                  </div>
+                  <button  type="button"  name="sedie_Id"   #Sedie_ID id="sedie_Id" data-toggle="modal"
+                    data-target="#staticBackdrop" class="btn btn-link">
+                    <img style="width: 35px; " src="assets/img/settings.png" alt="" srcset="">
+                  </button>
+                </button>
+              </div>
+    
+              
+          </div>
+        </div>
+        <!-- ------------------------------------------------------------------------------------------------------------ -->
+      <ng-template   #NonAdmin>
+            <div class="col-md-auto" >
+              <div  class="row">
+                <div style="margin-top: 30px;"  class="col-md-auto">
+                    <button [routerLink]="['/Home/sedie/'+id+'/Studenti']"  class="card" style="width: 18rem;">
+                      <img src="assets/img/studenti.jpg" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h2 class="card-text">Studenti</h2>
+                      </div>
+                      
+                    </button>
+                  </div>
+          
+                <div style="margin-top: 30px;"  class="col-md-auto">
+                    <button [routerLink]="['/Home/sedie/'+id+'/pc']"  class="card" style="width: 18rem;">
+                      <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+                      <div class="card-body">
+                        <h2 class="card-text">Computer</h2>
+                      </div>
+                    </button>
+                  </div>
+          
+                  <div style="margin-top: 30px;"  class="col-md-auto">
+                      <button [routerLink]="['/Home/sedie/'+id+'/movumenti']"  class="card" style="width: 18rem;">
+                        <img src="assets/img/Pn.jpg" class="card-img-top" alt="...">
+                        <div class="card-body">
+                          <h2 class="card-text">Movumenti</h2>
+                        </div>
+                      </button>
+                    </div>
+            </div>
+          </div>
+          </ng-template>
+        
+</div>

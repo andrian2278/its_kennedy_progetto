@@ -9,6 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterComponent implements OnInit {
   userModul: User=new User()
+  status=false;
   constructor(private api:AuthService) { }
   registerUserData=()=>{
     this.userModul.username;
@@ -17,6 +18,7 @@ export class RegisterComponent implements OnInit {
     this.userModul.Cognome_Admin;
     this.userModul.email;
     this.userModul.RUOLO;
+    this.userModul.Admin_Status=this.status;
     if (confirm('Sei sicuro che vorrei aggiungere nuovo studente???')) {
       this.api.registerUser(this.userModul).subscribe(_ => {
         alert('Good Sei rigistrato')

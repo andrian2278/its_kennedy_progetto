@@ -56,9 +56,10 @@ app.post('/api/register', (request, reply) => {
     var Nome_Admin = request.body.Nome_Admin;
     var Cognome_Admin = request.body.Cognome_Admin;
     var RUOLO=request.body.RUOLO;
+    var Admin_Status=request.body.Admin_Status;
     bcrypt.hash(password, saltRound).then(value => {
-        connection.query("INSERT INTO admin (username, password, email,Nome_Admin,Cognome_Admin, RUOLO) VALUES(?,?,?,?,?,?)",
-            [username, value, email, Nome_Admin, Cognome_Admin,RUOLO],
+        connection.query("INSERT INTO admin (username, password, email,Nome_Admin,Cognome_Admin, RUOLO,Admin_Status) VALUES(?,?,?,?,?,?,?)",
+            [username, value, email, Nome_Admin, Cognome_Admin,RUOLO,Admin_Status],
             (error, results, fields) => {
                 reply.status(201).send({ result: true }); // 201 created
             }).catch(reason => {
@@ -134,7 +135,7 @@ app.register(async function (fastify, opts) {
     });
 });
 // --------------------------------------------------------------------------------------------------------------------------------------
-app.get('/sede', (request, reply) => {
+app.get('/api/sede', (request, reply) => {
     connection.query("select * from sede ", (error, results, fields) => {
         app.log.info(results);
         app.log.info(fields);
@@ -146,8 +147,20 @@ app.get('/sede', (request, reply) => {
 
     });
 });
-app.get('/sede/admin/:id', (request, reply) => {
-    connection.query("select ad.Sede_IdSede,ad.Admin_IdAdmin,a.Nome_Admin,a.Cognome_Admin,a.Username,a.Email,a.RUOLO, s.SEDE,s.IdSede from admin_has_sede as ad inner join sede as s on ad.SEDE_idSEDE=s.idSEDE  inner join admin as a on ad.Admin_IdAdmin=a.IdAdmin where Admin_IdAdmin=?",[request.params.id],(error, results, fields) => {
+app.post('/api/sede', (request, reply) => {
+    var sede = request.body;
+    connection.query('insert into sede (Sede) values(?)',
+        [sede.SEDE], (error, results, fields) => {
+            if (error) {
+                reply.status(500).send({ error: error.message });
+                return;
+            }
+            app.log.info('Inserimento riuscito!');
+            reply.status(201).send();
+        });
+});
+app.get('/api/sede/admin/:id', (request, reply) => {
+    connection.query("select ad.Sede_IdSede,ad.Admin_IdAdmin,a.Nome_Admin,a.Cognome_Admin,a.username,a.email,a.RUOLO, s.SEDE,s.IdSede from admin_has_sede as ad inner join sede as s on ad.SEDE_idSEDE=s.idSEDE  inner join admin as a on ad.Admin_IdAdmin=a.IdAdmin where Admin_IdAdmin=?",[request.params.id],(error, results, fields) => {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -158,7 +171,18 @@ app.get('/sede/admin/:id', (request, reply) => {
     });
 });
 
-app.post("/sede/admin", (request, reply) => {
+app.get('/api/sede/admin/all/:id', (request, reply) => {
+    connection.query("select admin.Nome_Admin,admin.Cognome_Admin,admin.RUOLO from admin_has_Sede inner join admin on admin_Has_Sede.Admin_IdAdmin=admin.IdAdmin where Sede_idSede=?",[request.params.id],(error, results, fields) => {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results)
+    });
+});
+app.post("/api/sede/admin", (request, reply) => {
     let a = request.body;
     connection.query("Insert into admin_has_sede (Admin_IdAdmin,Sede_IdSede)Values(?,?)",
         [a.Admin_IdAdmin,a.Sede_IdSede],
@@ -172,8 +196,8 @@ app.post("/sede/admin", (request, reply) => {
 });
 
 // ---------------------------------------------------------------------------------------------------------------------------------------
-app.get('/admin', (request, reply) => {
-    connection.query("select * from admin ", (error, results, fields) => {
+app.get('/api/admin', (request, reply) => {
+    connection.query("select idADMIN, Nome_Admin, Cognome_Admin,username, email,RUOLO,Admin_Status from admin ", (error, results, fields) => {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -184,8 +208,8 @@ app.get('/admin', (request, reply) => {
 
     });
 });
-app.get('/admin/:id', (request, reply) => {
-    connection.query("select Nome_Admin,Cognome_Admin,Username,Email,RUOLO,Admin_Status from admin  where idADMIN=?",[request.params.id], (error, results, fields) => {
+app.get('/api/admin/:id', (request, reply) => {
+    connection.query("select Nome_Admin,Cognome_Admin,username,email,RUOLO,Admin_Status from admin  where idADMIN=?",[request.params.id], (error, results, fields) => {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -200,7 +224,113 @@ app.get('/admin/:id', (request, reply) => {
 
     });
 });
+// ----------------------------------------------------------------------------------------------------------------------------------------
 
+app.get('/api/students/:id', (request, reply) => {
+    connection.query("select u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla, c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO inner join  sede as s on c.SEDE_idSEDE=s.idSEDE where c.SEDE_idSEDE=? order by u.nome asc ",[request.params.id] ,(error, results, fields) => {
+       app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results)
+
+    });
+});
+
+// studenti in base al corso
+app.get('/api/students/corso/:corso',(request,reply)=>{
+    connection.query("select u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla,u.frequentazione,c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO where corso=? ",[request.params.corso],(error,results,fields)=>{
+        app.log.info(results);
+        app.log.info(fields);
+        if(error){
+            reply.status(500).send({error: error.message});
+            return;
+        }
+        reply.send(results)
+    });
+}); 
+
+// studente in base al nome 
+app.get('/api/students/nome/:nome',(request,reply)=>{
+    connection.query("select u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla,u.frequentazione,c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO where nome=? ",[request.params.nome],(error,results,fields)=>{
+        app.log.info(results);
+        app.log.info(fields);
+        if(error){
+            reply.status(500).send({error: error.message});
+            return;
+        }
+        reply.send(results)
+    });
+});
+
+app.get('/api/students/cognome/:cognome',(request,reply)=>{
+    connection.query("select u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla,u.frequentazione,c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO where cognome=? ",[request.params.cognome],(error,results,fields)=>{
+        app.log.info(results);
+        app.log.info(fields);
+        if(error){
+            reply.status(500).send({error: error.message});
+            return;
+        }
+        reply.send(results)
+    });
+});
+
+app.get('/api/students/comune/:comune',(request,reply)=>{
+    connection.query("select u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla,u.frequentazione,c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO where comune=? ",[request.params.comune],(error,results,fields)=>{
+        app.log.info(results);
+        app.log.info(fields);
+        if(error){
+            reply.status(500).send({error: error.message});
+            return;
+        }
+        reply.send(results)
+    });
+});
+
+app.post('/api/students',(request,reply)=>{
+    let u = request.body;
+    let date = new Date(u.data_nascita);
+    connection.query('Insert into utente (nome,cognome,data_nascita,luogo_nascita,via,civico,comune,provincia_sigla,CORSO_idCORSO,frequentazione) Values(?,?,?,?,?,?,?,?,?,?)',
+        [u.nome, u.cognome, date, u.luogo_nascita, u.via, u.civico, u.comune, u.provincia_sigla,u.CORSO_idCORSO, u.frequentazione],
+        (error, results, fields) => {
+            if (error) {
+                reply.status(500).send({ error: error.message });
+                return;
+            }
+            reply.status(204).send(results);
+        });
+})
+
+
+// ----------------------------------------------------------------------------------------------------------------------------------------------
+app.get('/api/corso/:id', (request, reply) => {
+    connection.query("select * from corso  where Sede_idSede=?",[request.params.id], (error, results, fields) => {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results)
+
+    });
+});
+
+app.post('/api/corso', (request, reply) => {
+    var C = request.body;
+    connection.query('insert into corso (CORSO,SEDE_idSEDE) values(?,?)',
+        [C.CORSO,C.SEDE_idSEDE], (error, results, fields) => {
+            if (error) {
+                reply.status(500).send({ error: error.message });
+                return;
+            }
+            app.log.info('Inserimento riuscito!');
+            reply.status(201).send();
+        });
+});
+// ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 app.listen(3000, (err, address) => {
     if (err) throw err
     app.log.info(`server listening on ${address}`)
