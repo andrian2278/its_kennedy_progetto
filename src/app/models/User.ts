@@ -56,3 +56,42 @@ export class Corso{
     CORSO:string;
     SEDE_idSEDE:number;
 }
+export class Stato{
+    idSTATO:number;
+    ritiro:boolean;
+    consegna:boolean;
+    guasto:boolean;
+    riparazione:boolean;
+    KO:boolean;
+}
+export class Hw {
+    idHW: number;
+    Cpu: string;
+    Ram: number;
+    Memoria: number;
+    Tipo_memoria: string;
+    marca: string;
+    modello: string;
+}
+export class PC {
+    idpc: number;
+    HW_idHW: number;
+    Seriale: string;
+    n_inventario: string;
+    n_fattura: string;
+    data_Acquisto: string;
+    note: string;
+    SEDE_idSEDE: number;
+    STATO_idSTATO: number;
+    ritiro: boolean;
+    consegna: boolean;
+    guasto:  boolean;
+    riparazione:  boolean;
+    ko: boolean;
+    cpu: string;
+    ram: number;
+    Memoria: number;
+    Tipo_memoria: string;
+    marca: string;
+    modello: string;
+}

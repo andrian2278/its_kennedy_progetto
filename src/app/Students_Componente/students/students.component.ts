@@ -36,13 +36,24 @@ export class StudentsComponent implements OnInit {
       this._Db.newStudente(this.newStudents).subscribe(_ => {
         this.ngOnInit();
         alert('GooD')
-
+        this.ClearValue();
       });
     }
     
   }
 
-
+ClearValue(){
+  this.newStudents.nome=null;
+  this.newStudents.cognome=null; 
+  this.newStudents.data_nascita=null;
+  this.newStudents.luogo_nascita=null;
+  this.newStudents.comune=null;
+  this.newStudents.civico=null;
+  this.newStudents.via=null;
+  this.newStudents.provincia_sigla=null;
+  this.newStudents.frequentazione =null;
+  this.newStudents.CORSO_idCORSO=null;
+}
 
   AddCorso() {
     this.newCorso.CORSO;
@@ -55,26 +66,32 @@ export class StudentsComponent implements OnInit {
     }
   }
  filtreNome(){
-   this._Db.filtroNome(this.Nomefilter).subscribe(x=>{
+   this._Db.filtroNome(this.id_Sede,this.Nomefilter).subscribe(x=>{
      this.StudentsList =x
    })
  }
  filtreCognome(){
-  this._Db.filtroCognome(this.Nomefilter).subscribe(x=>{
+  this._Db.filtroCognome(this.id_Sede,this.Nomefilter).subscribe(x=>{
     this.StudentsList =x
   })
 }
  filtreCorso(){
-  this._Db.filtroCorso(this.Nomefilter).subscribe(x=>{
+
+  this._Db.filtroCorso( this.id_Sede,this.Nomefilter).subscribe(x=>{
    this.StudentsList =x
  })
 }
 filtreComune(){
-  this._Db.filtroComune(this.Nomefilter).subscribe(x=>{
+  this._Db.filtroComune(this.id_Sede,this.Nomefilter).subscribe(x=>{
    this.StudentsList =x
  })
 }
+GetAll(){
+  this._Db.getSede_StudentsId(this.id_Sede).subscribe(x => {
+    this.StudentsList = x;
 
+  })
+}
   ngOnInit(): void {
     var payLoad = JSON.parse(window.atob(localStorage.getItem('token').split('.')[1]));
     this.DateUser = payLoad;

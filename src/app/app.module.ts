@@ -27,6 +27,7 @@ import { ComputerComponent } from './PC_Componente/computer/computer.component';
 import { InfoComputerComponent } from './PC_Componente/info-computer/info-computer.component';
 import { MovimentoComponent } from './Movimento_Componente/movimento/movimento.component';
 import { WitheBlankComponent } from './withe-blank/withe-blank.component';
+import { ProfilComponent } from './profil/profil.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { WitheBlankComponent } from './withe-blank/withe-blank.component';
     ComputerComponent,
     InfoComputerComponent,
     MovimentoComponent,
-    WitheBlankComponent
+    WitheBlankComponent,
+    ProfilComponent
   ],
   imports: [
     BrowserModule,

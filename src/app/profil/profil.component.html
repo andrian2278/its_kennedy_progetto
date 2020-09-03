@@ -1,0 +1,43 @@
+<div class="container">
+    <div style="margin-top: 50px;" class="col">
+      <div *ngIf="item">
+        <div class="row">
+          <div>
+            <h2 style="border-bottom: 5px solid ;">{{item.Nome_Admin}} {{item.Cognome_Admin}} </h2>
+          </div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <div class="col">
+            <div class="row">
+              <h5>Email: {{item.email}} </h5>
+            </div>
+            <div class="row">
+              <h5>Username: {{item.username}} </h5>
+            </div>
+            <div class="row">
+              <h5>Ruolo: {{item.RUOLO}} </h5>
+            </div>
+            <div class="row">
+              <div  style="margin-right: 10px;"> 
+                <div *ngIf="item.Admin_Status;else nonAdmin">
+                  <h5>Accese Sede: All Sede</h5>
+  
+              </div> 
+              </div>
+              <ng-template  #nonAdmin> 
+                <div>
+                  <h5>Accese Sede: 
+                    <a style="margin-right: 10px;" *ngFor="let s of SedeList">{{s.SEDE}}</a>
+                  </h5>  
+                </div> 
+              </ng-template>
+            </div>
+          </div>
+  
+        </div>
+  
+      </div>
+    </div>
+  
+  </div>
+  

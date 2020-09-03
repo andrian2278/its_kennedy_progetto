@@ -16,6 +16,7 @@ export class AuthGuard implements CanActivate,CanActivateChild {
           if(this._authService.roleMatch(roles)) return true;
           else{
             alert('Non hai permesso')
+            this._router.navigate(['/Home/sedie']);
             return false;
           }
         }

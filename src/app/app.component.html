@@ -1,59 +1,85 @@
 <nav style="border-bottom: solid 5px red;" class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand">
+  <a class="navbar-brand" *ngIf="_authService.loggedIn()"  [routerLink]="['/Home/sedie']">
+
     <div style="border: solid 1px black;" class="col">
       <div class="row">
-        <div  class="col" style="background-color: white;border-right: 1px solid black;border-bottom: 1PX solid black;">        
-            <h1 style="color: rgb(212, 55, 55);">ITS</h1>    
+        <div class="col" style="background-color: white;border-right: 1px solid black;border-bottom: 1PX solid black;">
+          <h1 style="color: rgb(212, 55, 55);">ITS</h1>
         </div>
         <div class="col" style="background-color: #de1d1d; border-bottom: 1PX solid black;">
           <h1>Kennedy</h1>
         </div>
       </div>
-      <div >
-      <div class="row" style="background-color: white;">
-              <h6 style="color: black;font-size: 8PX;margin-left: 5px; margin-right: 48PX;">ACADEMY</h6>
-              <H6 style="color: black;font-size: 8PX;">INFORMATION</H6> 
-                <H6 style="color: red;font-size: 8px;">COMMUNICATION</H6>
-                  <H6 style="color: black;font-size: 8PX;">TECHNOLOGY</H6> 
-              
-            
-        </div>  
+      <div>
+        <div class="row" style="background-color: white;">
+          <h6 style="color: black;font-size: 8PX;margin-left: 5px; margin-right: 48PX;">ACADEMY</h6>
+          <H6 style="color: black;font-size: 8PX;">INFORMATION</H6>
+          <H6 style="color: red;font-size: 8px;">COMMUNICATION</H6>
+          <H6 style="color: black;font-size: 8PX;">TECHNOLOGY</H6>
+        </div>
       </div>
     </div>
-    
+
+  </a>
+  <a class="navbar-brand" *ngIf="!_authService.loggedIn()"  [routerLink]="['/Home/Kennedy']">
+
+    <div style="border: solid 1px black;" class="col">
+      <div class="row">
+        <div class="col" style="background-color: white;border-right: 1px solid black;border-bottom: 1PX solid black;">
+          <h1 style="color: rgb(212, 55, 55);">ITS</h1>
+        </div>
+        <div class="col" style="background-color: #de1d1d; border-bottom: 1PX solid black;">
+          <h1>Kennedy</h1>
+        </div>
+      </div>
+      <div>
+        <div class="row" style="background-color: white;">
+          <h6 style="color: black;font-size: 8PX;margin-left: 5px; margin-right: 48PX;">ACADEMY</h6>
+          <H6 style="color: black;font-size: 8PX;">INFORMATION</H6>
+          <H6 style="color: red;font-size: 8px;">COMMUNICATION</H6>
+          <H6 style="color: black;font-size: 8PX;">TECHNOLOGY</H6>
+        </div>
+      </div>
+    </div>
+
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  
-  <div *ngIf="item.Admin_Status;else NonAdmin "class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul   class="navbar-nav mr-auto">
-      <li  class="nav-item">
-        <div *ngIf="_authService.loggedIn()" style="cursor:pointer"  class="col-md-auto" style=" border: 2px dotted red;border-radius: 20px;background-color: black;width: auto;height: 40px;">
+
+  <div *ngIf="item.Admin_Status;else NonAdmin " class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <div *ngIf="_authService.loggedIn()" style="cursor:pointer" class="col-md-auto"
+          style=" border: 2px dotted red;border-radius: 20px;background-color: black;width: auto;height: 40px;">
           <h6 class="nav-link" style="color: #de1d1d; text-align: center;font-size:smaller;">{{item.RUOLO}}
           </h6>
         </div>
-      
+
       </li>
       <li class="nav-item">
-      
+
       </li>
     </ul>
     <ul class="navbar-nav">
-      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"routerLink=""  >Your Profile</a>
-      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()" routerLink="/Home/admin"  routerLinkActive="active">Admin List</a>
-      <a class="nav-link" *ngIf="!_authService.loggedIn()"  routerLink="/login" routerLinkActive="active">Login</a>
+      
+      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()" [routerLink]="['/Home/profil']">Your
+        Profile</a>
+      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()" routerLink="/Home/admin"
+        routerLinkActive="active">Admin List</a>
+      <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/login" routerLinkActive="active">Login</a>
       <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"
-      (click)="_authService.logoutUser() ">Logout</a>
+        (click)="_authService.logoutUser() ">Logout</a>
     </ul>
   </div>
 
-  <ng-template   #NonAdmin>
-    <ul   class="navbar-nav mr-auto">
-      <li  class="nav-item">
-        <div *ngIf="_authService.loggedIn()" class="col-md-auto" style="border: 2px dotted red;border-radius: 20px;background-color: black;width: auto;height: auto;">
+  <ng-template #NonAdmin>
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <div *ngIf="_authService.loggedIn()" class="col-md-auto"
+          style="border: 2px dotted red;border-radius: 20px;background-color: black;width: auto;height: auto;">
           <h6 class="nav-link" style="color: #de1d1d; text-align: center;font-size: small;">{{item.RUOLO}}
           </h6>
         </div>
@@ -63,14 +89,16 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      
-      <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"routerLink="">Your Profile</a>
+
+     <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()" [routerLink]="['/Home/profil']">Your
+        Profile</a>
       <a class="nav-link" *ngIf="!_authService.loggedIn()" routerLink="/Home/login" routerLinkActive="active">Login</a>
       <a class="nav-link" style="cursor:pointer" *ngIf="_authService.loggedIn()"
         (click)="_authService.logoutUser() ">Logout</a>
+      
     </ul>
-      </ng-template>
+  </ng-template>
 </nav>
-<div >
+<div>
   <router-outlet></router-outlet>
 </div>

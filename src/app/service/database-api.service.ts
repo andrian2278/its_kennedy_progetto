@@ -1,5 +1,5 @@
 import { environment } from './../../environments/environment.prod';
-import { Sede_Admin, User, Sede, Sede_Accese, Students, Corso } from './../models/User';
+import { Sede_Admin, User, Sede, Sede_Accese, Students, Corso, Stato, Hw, PC } from './../models/User';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -40,17 +40,17 @@ export class DatabaseApiService {
   newStudente(studente){
     return this.http.post<Students>(`${environment._api}students`,studente)
   }
-  filtroCorso(corso){
-    return this.http.get<Students[]>(`${environment._api}students/corso/`+corso) 
+  filtroCorso(id,corso){
+    return this.http.get<Students[]>(`${environment._api}`+id+`/students/corso/`+corso) 
   }
-  filtroNome(nome){
-    return this.http.get<Students[]>(`${environment._api}students/nome/`+nome)
+  filtroNome(id,nome){
+    return this.http.get<Students[]>(`${environment._api}`+id+`/students/nome/`+nome)
   }
-  filtroCognome(cognome){
-    return this.http.get<Students[]>(`${environment._api}students/cognome/`+cognome)
+  filtroCognome(id,cognome){
+    return this.http.get<Students[]>(`${environment._api}`+id+`/students/cognome/`+cognome)
   }
-  filtroComune(comune){
-    return this.http.get<Students[]>(`${environment._api}students/cognome/`+comune)
+  filtroComune(id,comune){
+    return this.http.get<Students[]>(`${environment._api}`+id+`/students/comune/`+comune)
   }
   // ----------------------------------------------------------------------------------------------
   
@@ -60,5 +60,35 @@ export class DatabaseApiService {
   
   postNewCorso(CorsoNew){
     return this.http.post<Corso>(`${environment._api}corso`,CorsoNew)
+  }
+  // -------------------------------------------------------------------------------------------------------------------
+  getStatoRitiro(){
+    return this.http.get<Stato>(`${environment._api}stato/ritiro`)
+  }
+  getStatoConsegna(){
+    return this.http.get<Stato>(`${environment._api}stato/consegna`)
+  }
+  getStatoGuasto(){
+    return this.http.get<Stato>(`${environment._api}stato/guasto`)
+  }
+  getStatoRiparazione(){
+    return this.http.get<Stato>(`${environment._api}stato/riparazione`)
+  }
+  getStatoKO(){
+    return this.http.get<Stato>(`${environment._api}stato/KO`)
+  }
+  // ----------------------------------------------------------------------------------------------------
+  getHw(){
+    return this.http.get<Hw[]>(`${environment._api}sede/hw`)
+  }
+  postHw(hw){
+    return this.http.post<Hw>(`${environment._api}sede/hw`,hw)
+  }
+  // -----------------------------------------------------------------------------------------------
+  getListPC(id){
+    return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc`)
+  }
+  getID_PC(idsede,idpc){
+    return this.http.get<PC[]>(`${environment._api}sede/`+idsede+`/pc`+idpc)
   }
 }

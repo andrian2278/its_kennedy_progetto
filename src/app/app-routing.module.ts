@@ -1,3 +1,5 @@
+import { ProfilComponent } from './profil/profil.component';
+import { InfoStudenteComponent } from './Students_Componente/info-studente/info-studente.component';
 import { ComponentSedeComponent } from './Sede_Component/component-sede/component-sede.component';
 import { InfoAdminComponent } from './admin_Component/info-admin/info-admin.component';
 import {
@@ -31,6 +33,7 @@ const routes: Routes = [
     component:  HomeComponent,
     pathMatch: 'full',
   },
+  
   {
     path: 'Home',
     component: WitheBlankComponent,
@@ -38,6 +41,11 @@ const routes: Routes = [
       {
         path:'Kennedy',
         component:HomeComponent
+      },
+      {
+        path:'profil',
+        canActivate: [AuthGuard],
+        component:ProfilComponent
       },
       {
         path:'login',
@@ -58,6 +66,12 @@ const routes: Routes = [
         path: 'sedie/:id/Studenti',
         canActivate: [AuthGuard],
         component: StudentsComponent,
+        data: { permittedRoles: ['Admin', 'Moderator'] },
+      },
+      {
+        path: 'sedie/:id/Studenti/:id',
+        canActivate: [AuthGuard],
+        component: InfoStudenteComponent,
         data: { permittedRoles: ['Admin', 'Moderator'] },
       },
       {
