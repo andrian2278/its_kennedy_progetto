@@ -11,10 +11,12 @@ import { Component, OnInit } from '@angular/core';
 export class ComputerComponent implements OnInit {
   user: User = new User();
   id: any;
+  Hw:Hw[]=[];
   listaHw: Hw[]=[];
   listaPC: PC[] = [];
   hw: Hw = new Hw();
   pc: PC=new PC();
+  DataFiltre:string;
   constructor(private route: ActivatedRoute, private _DB: DatabaseApiService) { }
 
   newhw() {
@@ -49,7 +51,13 @@ newPc(){
   this.pc.data_Acquisto;
   this.pc.note; 
   this.pc.SEDE_idSEDE=this.id; 
-  this.pc.STATO_idSTATO; 
+  this.pc.STATO_idSTATO=1;
+  if (confirm('Sei sicuro che vorrei aggiungere nuovo HW???')) {
+    this._DB.postPC(this.pc).subscribe(_ => {
+      this.ngOnInit();
+      alert('GooD')
+    });
+  } 
 }
 HwList(){
 this._DB.getHw().subscribe(x=>{
@@ -60,6 +68,9 @@ this._DB.getHw().subscribe(x=>{
 cancelDate(){
   this.listaHw=null
 }
+
+
+
   ngOnInit(): void {
     this.route.paramMap.subscribe(param => {
       const id = param.get('id');
@@ -71,7 +82,9 @@ cancelDate(){
     this._DB.getListPC(this.id).subscribe(x => {
       this.listaPC = x;
     })
-
+    this._DB.getHw().subscribe(x=>{
+      this.Hw=x
+    })  
 
   }
 

@@ -1,5 +1,4 @@
 
-import { RoleGuardService } from './service/role-guard.service';
 import { TokenInterceptorService } from './service/token-interceptor.service';
 import { AuthService } from './service/auth.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -15,6 +14,7 @@ import { RegisterComponent } from './auth/register/register.component';
 import { HomeComponent } from './home/home.component';
 import { AuthGuard } from './service/auth.guard';
 
+import { Ng2SearchPipeModule } from 'ng2-search-filter';
 
 import { JwtModule } from '@auth0/angular-jwt';
 import { InfoAdminComponent } from './admin_Component/info-admin/info-admin.component';
@@ -51,13 +51,14 @@ import { ProfilComponent } from './profil/profil.component';
     BrowserModule,
     AppRoutingModule,
     FormsModule,
+    Ng2SearchPipeModule,
     HttpClientModule,
     JwtModule.forRoot({   config: {
       tokenGetter: function  tokenGetter() { 
       return localStorage.getItem('token');
      }} })
     ],
-  providers: [AuthService, AuthGuard, RoleGuardService,{
+  providers: [AuthService, AuthGuard,{
     provide: HTTP_INTERCEPTORS,
     useClass: TokenInterceptorService,
     multi: true

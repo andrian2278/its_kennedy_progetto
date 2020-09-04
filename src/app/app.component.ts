@@ -1,5 +1,4 @@
 import { DatabaseApiService } from './service/database-api.service';
-import { Roulo } from './models/ruolo';
 import { User } from './models/User';
 import { AuthService } from './service/auth.service';
 import { Component,Input } from '@angular/core';

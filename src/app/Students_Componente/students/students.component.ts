@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StudentsComponent implements OnInit {
   id_Sede: any;
-  Nomefilter:string;
+  Datafilter:string;
 
   DateUser: User = new User();
   StudentsList: Students[] = []
@@ -66,23 +66,23 @@ ClearValue(){
     }
   }
  filtreNome(){
-   this._Db.filtroNome(this.id_Sede,this.Nomefilter).subscribe(x=>{
+   this._Db.filtroNome(this.id_Sede,this.Datafilter).subscribe(x=>{
      this.StudentsList =x
    })
  }
  filtreCognome(){
-  this._Db.filtroCognome(this.id_Sede,this.Nomefilter).subscribe(x=>{
+  this._Db.filtroCognome(this.id_Sede,this.Datafilter).subscribe(x=>{
     this.StudentsList =x
   })
 }
  filtreCorso(){
 
-  this._Db.filtroCorso( this.id_Sede,this.Nomefilter).subscribe(x=>{
+  this._Db.filtroCorso( this.id_Sede,this.Datafilter).subscribe(x=>{
    this.StudentsList =x
  })
 }
 filtreComune(){
-  this._Db.filtroComune(this.id_Sede,this.Nomefilter).subscribe(x=>{
+  this._Db.filtroComune(this.id_Sede,this.Datafilter).subscribe(x=>{
    this.StudentsList =x
  })
 }

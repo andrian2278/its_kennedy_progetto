@@ -6,9 +6,7 @@ import {
   AuthGuard as AuthGuard
 } from './service/auth.guard';
 
-import {
-  RoleGuardService as RoleGuard
-} from './service/role-guard.service';
+
 
 
 
@@ -116,7 +114,6 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
   providers: [
-    AuthGuard,
-    RoleGuard]
+    AuthGuard]
 })
 export class AppRoutingModule { }

@@ -1,5 +1,4 @@
 import { environment } from './../../environments/environment.prod';
-import { Roulo } from './../models/ruolo';
 import { User, Token } from './../models/User';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';

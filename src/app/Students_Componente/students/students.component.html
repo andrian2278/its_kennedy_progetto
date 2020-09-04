@@ -47,10 +47,18 @@
 
       <div class="col-6">
         <div class="row">
+          
+           <div class="col-md-2"> 
           <button class="btn btn-primary" type="button" data-toggle="collapse" (click)="Text.value=null" data-target="#filtroCollaps"
             aria-expanded="false" aria-controls="collapseExample">
             Filtre
           </button>
+        </div>
+          <div class="col-md-8">
+            <input type="text" class="form-control" placeholder="Cerca.." #ValueInput aria-label=""
+          aria-describedby="basic-addon1" [(ngModel)]="Datafilter">
+          </div>
+          
           <div style="margin-bottom: 10px;" class="row">
             <div class="col">
               <div class="collapse" id="filtroCollaps">
@@ -61,20 +69,8 @@
                   </div>
                   <div class="row">
                     <div class="col-md-auto">
-                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreNome()]] "
-                        type="button">Nome</button>
-                    </div>
-                    <div class="col-md-auto">
-                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreCognome()]] "
-                        type="button">Cognome</button>
-                    </div>
-                    <div class="col-md-auto">
-                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreCorso()]] "
+                      <button class="btn btn-outline-secondary" (click)="[[Datafilter=Text.value],[filtreCorso()]] "
                         type="button">Corso</button>
-                    </div>
-                    <div class="col-md-auto">
-                      <button class="btn btn-outline-secondary" (click)="[[Nomefilter=Text.value],[filtreComune()]] "
-                        type="button">Comune</button>
                     </div>
                     <div class="col-md-auto">
                       <button class="btn btn-outline-secondary" (click)="GetAll() "
@@ -109,7 +105,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let s of StudentsList">
+          <tr *ngFor="let s of StudentsList | filter:Datafilter">
             <td>{{s.nome}} {{s.cognome}}</td>
             <td>{{s.corso}}</td>
             <td>{{s.data_nascita|date: 'dd-MM-yyyy'}}</td>

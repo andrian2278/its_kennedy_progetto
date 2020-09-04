@@ -91,4 +91,14 @@ export class DatabaseApiService {
   getID_PC(idsede,idpc){
     return this.http.get<PC[]>(`${environment._api}sede/`+idsede+`/pc`+idpc)
   }
+  postPC(newpc){
+    return this.http.post<PC>(`${environment._api}sede/pc`,newpc)
+  }
+  //-----FiltrePC---------------------------------------------------------------------------------------
+  FiltreSeriale(id,seriale){
+    return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc/filtre/seriale/`+seriale)
+  }
+  FiltreCpu(id,cpu){
+    return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc/filtre/cpu/`+cpu)
+  }
 }

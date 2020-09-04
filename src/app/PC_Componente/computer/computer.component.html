@@ -5,31 +5,29 @@
         <h1 style="border-bottom: 4px solid;">Computer</h1>
       </div>
 
-      
-        <div class="col" style="margin-top: 20px;">
-          <div class="row">
-            
-              <button style="margin-right: 10px;" class="btn btn-primary" type="button" data-toggle="collapse"
-                data-target="#menu" aria-expanded="false" aria-controls="menu">Menu
-              </button>
 
-              <button style="margin-right: 10px;" (click)="cancelDate()" class="btn btn-primary" type="button"
-                data-toggle="collapse" data-target="#collapseExample" aria-expanded="false"
-                aria-controls="collapseExample">
-                Tutti Hardware
-              </button>
-           
+      <div class="col" style="margin-top: 20px;">
+        <div class="row">
 
-            <div class="col">
-                <div class="row justify-content-end">
-                    <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseFiltre" aria-expanded="false" aria-controls="collapseFiltre">
-                        Filtre
-                      </button>
-                </div>
-              </div>
+          <button style="margin-right: 10px;" class="btn btn-primary" type="button" data-toggle="collapse"
+            data-target="#menu" aria-expanded="false" aria-controls="menu">Menu
+          </button>
+
+          <button style="margin-right: 10px;" (click)="cancelDate()" class="btn btn-primary" type="button"
+            data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+            Tutti Hardware
+          </button>
+          
+
+          <div class="col">
+            <div class="row justify-content-end">
+              <input type="text" class="form-control" placeholder="Cerca.." #ValueInput aria-label=""
+            aria-describedby="basic-addon1" [(ngModel)]="DataFiltre">
+            </div>
           </div>
         </div>
-   
+      </div>
+
 
       <div class="row">
         <div class="col-5">
@@ -49,16 +47,7 @@
               </div>
             </div>
           </div>
-          
-        </div>
-        
-        <div class="col-7">
-        <div class="collapse" id="collapseFiltre">
-            <div class="card card-body">
-             
 
-            </div>
-          </div>
         </div>
       </div>
 
@@ -80,7 +69,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let hw of listaHw">
+                  <tr *ngFor="let hw of listaHw | filter:DataFiltre">
                     <td>{{hw.marca}}</td>
                     <td>{{hw.modello}}</td>
                     <td>{{hw.Cpu}}</td>
@@ -109,7 +98,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let pc of listaPC">
+            <tr *ngFor="let pc of listaPC | filter:DataFiltre">
               <th scope="row">
                 <div *ngIf="pc.consegna;else NonConsegnato">
                   Consegnato
@@ -150,188 +139,193 @@
       </div>
 
 
- </div>
-
     </div>
 
-
-    <!-- HwModal -->
-    <div class="modal fade" id="HwModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Novo HW</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form name="insertForm" #f="ngForm" (ngSubmit)="f.form.valid && newhw()">
-            <div class="modal-body">
+  </div>
 
 
-
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputMarca">Marca</label>
-                  <input [(ngModel)]="hw.marca" #Marca="ngModel" type="text" class="form-control" id="inputMarca"
-                    [ngModelOptions]="{standalone: true}" maxlength="45" required>
-                  <div style="color: red;" *ngIf="Marca.invalid">
-                    <div *ngIf="Marca.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="inputModello">Modello</label>
-                  <input [(ngModel)]="hw.modello" #Modello="ngModel" type="text" class="form-control" id="inputModello"
-                    [ngModelOptions]="{standalone: true}" maxlength="45" required>
-                  <div style="color: red;" *ngIf="Modello.invalid">
-                    <div *ngIf="Modello.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputCpu">Cpu</label>
-                  <input type="text" [(ngModel)]="hw.Cpu" #CPU="ngModel" class="form-control" id="inputCpu"
-                    [ngModelOptions]="{standalone: true}" maxlength="45" required>
-                  <div style="color: red;" *ngIf="CPU.invalid">
-                    <div *ngIf="CPU.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="inputRam">Ram</label>
-                  <input type="number" [(ngModel)]="hw.Ram" #RAM="ngModel" min="1" class="form-control" id="inputRam"
-                    [ngModelOptions]="{standalone: true}" placeholder="Gb" required>
-                  <div style="color: red;" *ngIf="RAM.invalid">
-                    <div *ngIf="RAM.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-3 mb-3">
-                  <label for="inputMemoria">Memoria</label>
-                  <input type="number" [(ngModel)]="hw.Memoria" #MEMORIA="ngModel" min="1" class="form-control"
-                    [ngModelOptions]="{standalone: true}" id="inputMemoria" required>
-                  <div style="color: red;" *ngIf="MEMORIA.invalid">
-                    <div *ngIf="MEMORIA.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group col-md-9">
-                  <label for="inputTipoDimemoria">Tipo di Memoria</label>
-                  <input type="text" [(ngModel)]="hw.Tipo_memoria" #TipodiMemoria="ngModel" class="form-control"
-                    id="inputTipoDiMemoria" maxlength="45" [ngModelOptions]="{standalone: true}" required>
-                  <div style="color: red;" *ngIf="TipodiMemoria.invalid">
-                    <div *ngIf="TipodiMemoria.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" (click)="clearValori()"
-                data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Invio</button>
-            </div>
-          </form>
+  <!-- HwModal -->
+  <div class="modal fade" id="HwModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Novo HW</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <form name="insertForm" #f="ngForm" (ngSubmit)="f.form.valid && newhw()">
+          <div class="modal-body">
+
+
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputMarca">Marca</label>
+                <input [(ngModel)]="hw.marca" #Marca="ngModel" type="text" class="form-control" id="inputMarca"
+                  [ngModelOptions]="{standalone: true}" maxlength="45" required>
+                <div style="color: red;" *ngIf="Marca.invalid">
+                  <div *ngIf="Marca.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputModello">Modello</label>
+                <input [(ngModel)]="hw.modello" #Modello="ngModel" type="text" class="form-control" id="inputModello"
+                  [ngModelOptions]="{standalone: true}" maxlength="45" required>
+                <div style="color: red;" *ngIf="Modello.invalid">
+                  <div *ngIf="Modello.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCpu">Cpu</label>
+                <input type="text" [(ngModel)]="hw.Cpu" #CPU="ngModel" class="form-control" id="inputCpu"
+                  [ngModelOptions]="{standalone: true}" maxlength="45" required>
+                <div style="color: red;" *ngIf="CPU.invalid">
+                  <div *ngIf="CPU.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="inputRam">Ram</label>
+                <input type="number" [(ngModel)]="hw.Ram" #RAM="ngModel" min="1" class="form-control" id="inputRam"
+                  [ngModelOptions]="{standalone: true}" placeholder="Gb" required>
+                <div style="color: red;" *ngIf="RAM.invalid">
+                  <div *ngIf="RAM.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-3 mb-3">
+                <label for="inputMemoria">Memoria</label>
+                <input type="number" [(ngModel)]="hw.Memoria" #MEMORIA="ngModel" min="1" class="form-control"
+                  [ngModelOptions]="{standalone: true}" id="inputMemoria" required>
+                <div style="color: red;" *ngIf="MEMORIA.invalid">
+                  <div *ngIf="MEMORIA.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-9">
+                <label for="inputTipoDimemoria">Tipo di Memoria</label>
+                <input type="text" [(ngModel)]="hw.Tipo_memoria" #TipodiMemoria="ngModel" class="form-control"
+                  id="inputTipoDiMemoria" maxlength="45" [ngModelOptions]="{standalone: true}" required>
+                <div style="color: red;" *ngIf="TipodiMemoria.invalid">
+                  <div *ngIf="TipodiMemoria.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="clearValori()" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Invio</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
 
 
 
-    <!-- PCModal -->
-    <div class="modal fade" id="PCModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Novo Pc</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <form name="insertForm" #PCForm="ngForm" (ngSubmit)="PCForm.form.valid && newPc()">
-            <div class="modal-body">
-
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputMarca">Seriale</label>
-                  <input [(ngModel)]="pc.Seriale" #Seriale="ngModel" type="text" class="form-control" id="inputSeriale"
-                    [ngModelOptions]="{standalone: true}" maxlength="70" required>
-                  <div style="color: red;" *ngIf="Seriale.invalid">
-                    <div *ngIf="Seriale.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group col-md-6">
-                  <label for="inputModello">Nomero Invetario</label>
-                  <input [(ngModel)]="pc.n_inventario" #Invetario="ngModel" type="text" class="form-control"
-                    id="inputInventario" [ngModelOptions]="{standalone: true}" maxlength="45" required>
-                  <div style="color: red;" *ngIf="Invetario.invalid">
-                    <div *ngIf="Invetario.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="inputCpu">Fattura</label>
-                  <input type="text" [(ngModel)]="pc.n_fattura" #fattura="ngModel" class="form-control"
-                    id="inputfattura" [ngModelOptions]="{standalone: true}" maxlength="45" required>
-                  <div style="color: red;" *ngIf="fattura.invalid">
-                    <div *ngIf="fattura.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-
-                <div class="form-group col-md-6">
-                  <label for="inputRam">Data di Acquisto</label>
-                  <input type="date" [(ngModel)]="pc.data_Acquisto" #Date="ngModel" min="1" class="form-control"
-                    id="inputDate" [ngModelOptions]="{standalone: true}" placeholder="Gb" required>
-                  <div style="color: red;" *ngIf="Date.invalid">
-                    <div *ngIf="Date.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="form-row">
-                <div class="form-group col-md-12 mb-3">
-                  <label for="inputMemoria">Note</label>
-                  <textarea class="form-control" id="Note" [(ngModel)]="pc.note" #NOTE="ngModel" maxlength=500
-                    rows="3"></textarea>
-                  <div style="color: red;" *ngIf="MEMORIA.invalid">
-                    <div *ngIf="MEMORIA.errors.required">
-                      Campo obbligatorio.
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" (click)="clearValori()"
-                data-dismiss="modal">Close</button>
-              <button type="submit" class="btn btn-primary">Invio</button>
-            </div>
-          </form>
+  <!-- PCModal -->
+  <div class="modal fade" id="PCModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Novo Pc</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <form name="insertForm" #PCForm="ngForm" (ngSubmit)="PCForm.form.valid && newPc()">
+          <div class="modal-body">
+            <div class="form-group ">
+              <label for="inputState">Hardware</label>
+              <select id="inputState"[ngModelOptions]="{standalone: true}" [(ngModel)]="pc.HW_idHW" class="form-control">
+                <option selected>Choose...</option>
+                <option [value]="hw.idHW" *ngFor="let hw of Hw">Marca:{{hw.marca}} Modello:{{hw.modello}} Cpu:{{hw.Cpu}} Ram:{{hw.Ram}}GB Memoria:{{hw.Memoria}}GB  Tipo Memoria:{{hw.Tipo_memoria}}</option>
+              </select>
+            </div>
+            <div class="form-row">
+
+              <div class="form-group col-md-6">
+                <label for="inputMarca">Seriale</label>
+                <input [(ngModel)]="pc.Seriale" #Seriale="ngModel" type="text" class="form-control" id="inputSeriale"
+                  [ngModelOptions]="{standalone: true}" maxlength="70" required>
+                <div style="color: red;" *ngIf="Seriale.invalid">
+                  <div *ngIf="Seriale.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <label for="inputModello">Nomero Invetario</label>
+                <input [(ngModel)]="pc.n_inventario" #Invetario="ngModel" type="text" class="form-control"
+                  id="inputInventario" [ngModelOptions]="{standalone: true}" maxlength="45" required>
+                <div style="color: red;" *ngIf="Invetario.invalid">
+                  <div *ngIf="Invetario.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="inputCpu">Fattura</label>
+                <input type="text" [(ngModel)]="pc.n_fattura" #fattura="ngModel" class="form-control" id="inputfattura"
+                  [ngModelOptions]="{standalone: true}" maxlength="45" required>
+                <div style="color: red;" *ngIf="fattura.invalid">
+                  <div *ngIf="fattura.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="inputRam">Data di Acquisto</label>
+                <input type="date" [(ngModel)]="pc.data_Acquisto" #Date="ngModel" min="1" class="form-control"
+                  id="inputDate" [ngModelOptions]="{standalone: true}" placeholder="Gb" maxlength="8" required>
+                <div style="color: red;" *ngIf="Date.invalid">
+                  <div *ngIf="Date.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group col-md-12 mb-3">
+                <label for="inputMemoria">Note</label>
+                <textarea class="form-control" id="Note"[ngModelOptions]="{standalone: true}" [(ngModel)]="pc.note" #NOTE="ngModel" maxlength=500
+                  rows="3"></textarea>
+                <div style="color: red;" *ngIf="NOTE.invalid">
+                  <div *ngIf="NOTE.errors.required">
+                    Campo obbligatorio.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="clearValori()" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Invio</button>
+          </div>
+        </form>
       </div>
     </div>
+  </div>
