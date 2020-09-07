@@ -40,18 +40,7 @@ export class DatabaseApiService {
   newStudente(studente){
     return this.http.post<Students>(`${environment._api}students`,studente)
   }
-  filtroCorso(id,corso){
-    return this.http.get<Students[]>(`${environment._api}`+id+`/students/corso/`+corso) 
-  }
-  filtroNome(id,nome){
-    return this.http.get<Students[]>(`${environment._api}`+id+`/students/nome/`+nome)
-  }
-  filtroCognome(id,cognome){
-    return this.http.get<Students[]>(`${environment._api}`+id+`/students/cognome/`+cognome)
-  }
-  filtroComune(id,comune){
-    return this.http.get<Students[]>(`${environment._api}`+id+`/students/comune/`+comune)
-  }
+  
   // ----------------------------------------------------------------------------------------------
   
   getCorsi(id){

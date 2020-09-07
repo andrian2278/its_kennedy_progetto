@@ -65,27 +65,7 @@ ClearValue(){
 
     }
   }
- filtreNome(){
-   this._Db.filtroNome(this.id_Sede,this.Datafilter).subscribe(x=>{
-     this.StudentsList =x
-   })
- }
- filtreCognome(){
-  this._Db.filtroCognome(this.id_Sede,this.Datafilter).subscribe(x=>{
-    this.StudentsList =x
-  })
-}
- filtreCorso(){
 
-  this._Db.filtroCorso( this.id_Sede,this.Datafilter).subscribe(x=>{
-   this.StudentsList =x
- })
-}
-filtreComune(){
-  this._Db.filtroComune(this.id_Sede,this.Datafilter).subscribe(x=>{
-   this.StudentsList =x
- })
-}
 GetAll(){
   this._Db.getSede_StudentsId(this.id_Sede).subscribe(x => {
     this.StudentsList = x;
