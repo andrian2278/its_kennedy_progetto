@@ -18,7 +18,7 @@ id: any;
     this.route.paramMap.subscribe(param => {
       const id = param.get('id');
       this.id =id
-       console.log(id)
+       
   });
 }
 

@@ -95,3 +95,21 @@ export class PC {
     marca: string;
     modello: string;
 }
+export class Movimento {
+    data_consegna: Date;
+    cavo_rete: number;
+    alimentatore: number;
+    borsa: number;
+    mouse: number;
+    hdd: number;
+    con_ethernet: number;
+    con_usb: number;
+    note: string;
+    note_movimento: string;
+    nome: string;
+    cognome: string;
+    ADMIN_idADMIN:number;
+    UTENTE_idUTENTE:number;
+    PC_idpc:number;
+    STATO_idSTATO:number;
+}

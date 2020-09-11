@@ -1,5 +1,5 @@
 import { environment } from './../../environments/environment.prod';
-import { Sede_Admin, User, Sede, Sede_Accese, Students, Corso, Stato, Hw, PC } from './../models/User';
+import { Sede_Admin, User, Sede, Sede_Accese, Students, Corso, Stato, Hw, PC, Movimento } from './../models/User';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
@@ -11,6 +11,9 @@ export class DatabaseApiService {
   constructor(private http:HttpClient) { }
   getSede(){
     return this.http.get<Sede[]>(`${environment._api}sede`)
+  }
+  getSedeID(id){
+    return this.http.get<Sede>(`${environment._api}sede/`+id)
   }
   postSede( newsede){
     return this.http.post<Sede>(`${environment._api}sede`,newsede)
@@ -35,7 +38,10 @@ export class DatabaseApiService {
   }
   // ------------------------------------------------------------------------------------------
   getSede_StudentsId(id){
-    return this.http.get<Students[]>( `${environment._api}students/`+id)
+    return this.http.get<Students[]>( `${environment._api}sede/`+id+`/students`)
+  }
+  getStudents_All(id){
+    return this.http.get<Students[]>( `${environment._api}sede/`+id+`/students/frequentazione`)
   }
   newStudente(studente){
     return this.http.post<Students>(`${environment._api}students`,studente)
@@ -78,16 +84,33 @@ export class DatabaseApiService {
     return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc`)
   }
   getID_PC(idsede,idpc){
-    return this.http.get<PC[]>(`${environment._api}sede/`+idsede+`/pc`+idpc)
+    return this.http.get<PC[]>(`${environment._api}sede/`+idsede+`/pc/`+idpc)
+  }
+  getPc_IdStatus(id,idstato){
+    return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc_stato/`+idstato)
+  }
+  getPC_Stato(idsede){
+    return this.http.get<PC[]>(`${environment._api}sede/`+idsede+`/pc_stato/disponibili`)
   }
   postPC(newpc){
     return this.http.post<PC>(`${environment._api}sede/pc`,newpc)
   }
+  updatePC(id,newstato){
+    return this.http.put<PC>(`${environment._api}sede/pc/updata/`+id,newstato)
+  }
+ 
   //-----FiltrePC---------------------------------------------------------------------------------------
   FiltreSeriale(id,seriale){
     return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc/filtre/seriale/`+seriale)
   }
   FiltreCpu(id,cpu){
     return this.http.get<PC[]>(`${environment._api}sede/`+id+`/pc/filtre/cpu/`+cpu)
+  }
+  // --------------------------------------------------------------------------------------------------------------------------------
+  getMovimenti(id,idstato){
+    return this.http.get<Movimento[]>(`${environment._api}sede/`+id+`/movimenti/`+idstato)
+  }
+  postMovimenti(newMovimento){
+    return this.http.post<Movimento>(`${environment._api}sede/new_movimenti`,newMovimento)
   }
 }

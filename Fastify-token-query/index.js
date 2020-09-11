@@ -185,6 +185,20 @@ app.get('/api/sede', function (request, reply) {
         reply.send(results);
     });
 });
+app.get('/api/sede/:id', function (request, reply) {
+    connection.query("select * from sede where idSede=?", [request.params.id], function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        if (results.length == 0)
+            reply.status(404).send();
+        else
+            reply.send(results[0]);
+    });
+});
 app.post('/api/sede', function (request, reply) {
     var sede = request.body;
     connection.query('insert into sede (Sede) values(?)', [sede.SEDE], function (error, results, fields) {
@@ -255,8 +269,8 @@ app.get('/api/admin/:id', function (request, reply) {
     });
 });
 // ---------------studente-------------------------------------------------------------------------------------------------------------------------
-app.get('/api/students/:id', function (request, reply) {
-    connection.query("select u.idUTENTE,u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla, c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO inner join  sede as s on c.SEDE_idSEDE=s.idSEDE where c.SEDE_idSEDE=? order by u.nome asc ", [request.params.id], function (error, results, fields) {
+app.get('/api/sede/:id/students', function (request, reply) {
+    connection.query("select u.idUTENTE,u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla, c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO inner join  sede as s on c.SEDE_idSEDE=s.idSEDE where c.SEDE_idSEDE=? and frequentazione=1 order by u.nome asc ", [request.params.id], function (error, results, fields) {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -267,8 +281,8 @@ app.get('/api/students/:id', function (request, reply) {
     });
 });
 // studenti in base al corso
-app.get('/api/:id/students/frequentazione', function (request, reply) {
-    connection.query("select u.idUTENTE,u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla,u.frequentazione,c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO inner join  sede as s on c.SEDE_idSEDE=s.idSEDE where c.SEDE_idSEDE=? and frequentazione=?;", [request.params.id], function (error, results, fields) {
+app.get('/api/sede/:id/students/all', function (request, reply) {
+    connection.query("select u.idUTENTE,u.nome,u.cognome,u.data_nascita,u.luogo_nascita,u.via,u.civico,u.comune,u.provincia_sigla, c.corso from utente as u inner join CORSO as c on u.CORSO_idCORSO=c.idCORSO inner join  sede as s on c.SEDE_idSEDE=s.idSEDE where c.SEDE_idSEDE=? order by u.nome asc", [request.params.id], function (error, results, fields) {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -428,6 +442,30 @@ app.get('/api/sede/:id/pc', function (request, reply) {
         reply.send(results);
     });
 });
+app.get('/api/sede/:id/pc_stato/disponibili', function (request, reply) {
+    var pc = request.body;
+    connection.query("select pc.idpc,pc.HW_idHW,pc.Seriale,pc.n_inventario,pc.n_fattura,pc.data_Acquisto,pc.note,pc.SEDE_idSEDE,pc.STATO_idSTATO,stato.ritiro,stato.consegna,stato.guasto,stato.riparazione,stato.ko,hw.cpu,hw.ram,hw.Memoria,hw.Tipo_memoria,hw.marca,hw.modello from pc inner join stato on pc.stato_idStato=stato.IdStato inner join hw on pc.HW_idHW=hw.IDhw where sede_idsede=? and  STATO_idSTATO=1 || STATO_idSTATO=2;", [request.params.id], function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results);
+    });
+});
+app.get('/api/sede/:id/pc_stato/:idstato', function (request, reply) {
+    var pc = request.body;
+    connection.query("select pc.idpc,pc.HW_idHW,pc.Seriale,pc.n_inventario,pc.n_fattura,pc.data_Acquisto,pc.note,pc.SEDE_idSEDE,pc.STATO_idSTATO,stato.ritiro,stato.consegna,stato.guasto,stato.riparazione,stato.ko,hw.cpu,hw.ram,hw.Memoria,hw.Tipo_memoria,hw.marca,hw.modello from pc inner join stato on pc.stato_idStato=stato.IdStato inner join hw on pc.HW_idHW=hw.IDhw where sede_idsede=? and  STATO_idSTATO=?", [request.params.id, request.params.idstato], function (error, results, fields) {
+        app.log.info(results);
+        app.log.info(fields);
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.send(results);
+    });
+});
 app.post('/api/sede/pc', function (request, reply) {
     var pc = request.body;
     var date = new Date(pc.data_Acquisto);
@@ -460,8 +498,8 @@ app.post('/api/sede/movimenti', function (request, reply) {
         reply.status(201).send();
     });
 });
-app.get('/api/sede/:id/movimento', function (request, reply) {
-    connection.query("select distinct(m.data_consegna),m.cavo_rete,m.alimentatore,m.borsa,m.mouse,m.hdd,m.con_ethernet,m.con_usb,m.note,m.note_movimento,m.data_consegna,u.nome,u.cognome,pc.seriale,pc.IDpc from movimento as m inner join  utente as u on m.UTENTE_idUTENTE=u.idUTENTE inner join pc on m.PC_idpc=pc.idpc inner join sede on pc.SEDE_idSEDE=sede.idSEDE where sede.idSEDE=?", [request.params.id], function (error, results, fields) {
+app.get('/api/sede/:id/movimenti/:idstato', function (request, reply) {
+    connection.query("select m.data_consegna,m.cavo_rete,m.alimentatore,m.borsa,m.mouse,m.hdd,m.con_ethernet,m.con_usb,m.note,m.note_movimento,m.data_consegna,u.nome,u.cognome,pc.Seriale from movimento as m inner join  utente as u on m.UTENTE_idUTENTE=u.idUTENTE inner join pc on m.PC_idpc=pc.idpc inner join stato on pc.STATO_idSTATO=stato.idSTATO where pc.SEDE_idSEDE=? && stato.idSTATO=? ", [request.params.id, request.params.idstato], function (error, results, fields) {
         app.log.info(results);
         app.log.info(fields);
         if (error) {
@@ -469,6 +507,28 @@ app.get('/api/sede/:id/movimento', function (request, reply) {
             return;
         }
         reply.send(results);
+    });
+});
+// insert movimenti
+app.post('/api/sede/new_movimenti', function (request, reply) {
+    var m = request.body;
+    var date = new Date(m.data_consegna);
+    connection.query("INSERT INTO MOVIMENTO (data_consegna,cavo_rete,alimentatore,borsa,mouse,hdd,con_ethernet,con_usb,note,note_movimento,PC_idPC,UTENTE_idUTENTE,ADMIN_idADMIN,STATO_idSTATO) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)", [date, m.cavo_rete, m.alimentatore, m.borsa, m.mouse, m.hdd, m.con_ethernet, m.con_usb, m.note, m.note_movimento, m.PC_idpc, m.UTENTE_idUTENTE, m.ADMIN_idADMIN, m.STATO_idSTATO], function (error, results, fields) {
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.status(201).send();
+    });
+});
+app.put('/api/sede/pc/updata/:id', function (request, reply) {
+    var pc = request.body;
+    connection.query("UPDATE pc SET STATO_idSTATO=? where Idpc=?", [pc.STATO_idSTATO, request.params.id], function (error, results, fields) {
+        if (error) {
+            reply.status(500).send({ error: error.message });
+            return;
+        }
+        reply.status(204).send(results);
     });
 });
 app.listen(3000, function (err, address) {

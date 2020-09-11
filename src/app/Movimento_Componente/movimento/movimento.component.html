@@ -1,1 +1,190 @@
-<p>movimento works!</p>
+<div class="container">
+  <div class="col">
+    <div class="row justify-content-center">
+      <h1 style="border-bottom: 4px solid;">Movimento</h1>
+    </div>
+  </div>
+  <div class="col">
+    <div class="row">
+      <button class="btn btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample"
+        aria-expanded="false" aria-controls="collapseExample">
+        Menu
+      </button>
+
+    </div>
+    <div class="row">
+      <div class="collapse" id="collapseExample">
+        <div class="card card-body">
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#ConsegnaModel">
+            Novo Movimento
+          </button>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="ConsegnaModel" tabindex="-1" aria-labelledby="ConsegnaModelLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Consegna Computer</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form name="insertForm" #f="ngForm" (ngSubmit)="f.form.valid && AddConsegna()">
+        <div class="modal-body">
+          <div style="border-bottom: 1px solid;" class="form-group">
+
+
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" (click)="GetPC_Disponibili()"
+                [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO"
+                [ngModelOptions]="{standalone: true}" #consegnaStat id="consegnaStat" value="3"
+                name="inlineRadioOptions" id="inlineRadio2">
+              <label class="form-check-label" for="inlineRadio2">Consegna</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" (click)="GetPC_status(this.id_query=3)"
+                [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #ritiro="ngModel"
+                [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio2" value="2">
+              <label class="form-check-label" for="inlineRadio2">Ritiro</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" (click)="GetPC_status(id_query=3)"
+                [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #guasto="ngModel"
+                [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio1" value="4">
+              <label class="form-check-label" for="inlineRadio1">Guasto</label>
+            </div>
+            <button (click)="GetPC_status(id_query=4)" class="btn btn-link" type="button" data-toggle="collapse"
+              data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+              Riparazione
+            </button>
+          </div>
+          <div class="collapse" id="collapseExample">
+            <div class="card card-body">
+              <div class="row">
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" [(ngModel)]="upPC.STATO_idSTATO"
+                      [(ngModel)]="New_Movimento.STATO_idSTATO" [ngModelOptions]="{standalone: true}" #consegnaStat
+                      id="consegnaStat" value="2" name="inlineRadioOptions" id="inlineRadio2">
+                    <label class="form-check-label" for="inlineRadio2">Ritirato</label>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" [(ngModel)]="upPC.STATO_idSTATO"
+                      [(ngModel)]="New_Movimento.STATO_idSTATO" #riparazione="ngModel"
+                      [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio1" value="4">
+                    <label class="form-check-label" for="inlineRadio1">Riparazione</label>
+                  </div>
+
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Computer</label>
+            <select [(ngModel)]="New_Movimento.PC_idpc" #idAdmin="ngModel" [(ngModel)]="id_pc" class="form-control"
+              id="inputAdmin" [ngModelOptions]="{standalone: true}">
+              <option *ngFor="let s of Lista_PC" [value]="s.idpc">{{s.Seriale}}</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Studente</label>
+            <select [(ngModel)]="New_Movimento.UTENTE_idUTENTE" id="inputUtente" #idUtente="ngModel"
+              class="form-control" [ngModelOptions]="{standalone: true}">
+
+              <option *ngFor="let s of Lista_Studente" [value]="s.idUTENTE">{{s.cognome}} {{s.nome}}</option>
+            </select>
+          </div>
+
+
+          <div class="form-row">
+            <div class="form-group col-md-4">
+              <label for="inputState">Mouse</label>
+              <select #mouse="ngModel" [(ngModel)]="New_Movimento.mouse" id="inputState" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">Borsa</label>
+              <select #borsa="ngModel" [(ngModel)]="New_Movimento.borsa" id="inputBorsa" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group col-md-4">
+              <label for="inputState">Alimentatore</label>
+              <select #alimentatore="ngModel" [(ngModel)]="New_Movimento.alimentatore" id="inputBorsa"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label for="inputState">Cavo Di Rete</label>
+              <select #cavo_rete="ngModel" [(ngModel)]="New_Movimento.cavo_rete" id="inputcavo_rete"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputState">Cavo Di Usb</label>
+              <select #con_usb="ngModel" [(ngModel)]="New_Movimento.con_usb" id="inputcon_usb" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputState">Con Ethernet</label>
+              <select #alimentatore="ngModel" [(ngModel)]="New_Movimento.con_ethernet" id="inputBorsa"
+                class="form-control" [ngModelOptions]="{standalone: true}">
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="form-group col-md-3">
+              <label for="inputState">Hdd</label>
+              <select #Hdd="ngModel" [(ngModel)]="New_Movimento.hdd" id="inputHdd" class="form-control"
+                [ngModelOptions]="{standalone: true}">
+                <option value="1">Si</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+
+          </div>
+          <div class="form-group">
+            <label for="exampleFormControlTextarea1">Note</label>
+            <textarea class="form-control" [(ngModel)]="New_Movimento.note" #Note="ngModel"
+              [ngModelOptions]="{standalone: true}" id="exampleFormControlTextarea1" rows="3" maxlength=500></textarea>
+          </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
