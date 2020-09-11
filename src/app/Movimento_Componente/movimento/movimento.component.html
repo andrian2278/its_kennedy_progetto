@@ -43,52 +43,24 @@
             <div class="form-check form-check-inline">
               <input class="form-check-input" type="radio" (click)="GetPC_Disponibili()"
                 [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO"
-                [ngModelOptions]="{standalone: true}" #consegnaStat id="consegnaStat" value="3"
-                name="inlineRadioOptions" id="inlineRadio2">
-              <label class="form-check-label" for="inlineRadio2">Consegna</label>
+                [ngModelOptions]="{standalone: true}" #consegnaStat value="3" name="inlineRadioOptions"
+                id="inlineRadio1">
+              <label class="form-check-label" for="inlineRadio1">Consegna</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" (click)="GetPC_status(3)"
-                [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #ritiro="ngModel"
-                [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio2" value="2">
+              <input class="form-check-input" type="radio" (click)="GetPC_status(3)" [(ngModel)]="upPC.STATO_idSTATO"
+                [(ngModel)]="New_Movimento.STATO_idSTATO" #ritiroPC="ngModel" [ngModelOptions]="{standalone: true}"
+                name="inlineRadioOptions" id="inlineRadio2" value="2">
               <label class="form-check-label" for="inlineRadio2">Ritiro</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" (click)="GetPC_status(3)"
-                [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #guasto="ngModel"
-                [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio1" value="4">
-              <label class="form-check-label" for="inlineRadio1">Guasto</label>
-            </div>
-            <button (click)="GetPC_status(4)" class="btn btn-link" type="button" data-toggle="collapse"
-              data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-              Riparazione
-            </button>
-          </div>
-          <div class="collapse" id="collapseExample">
-            <div class="card card-body">
-              <div class="row">
-                <div class="col">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" [(ngModel)]="upPC.STATO_idSTATO"
-                      [(ngModel)]="New_Movimento.STATO_idSTATO" [ngModelOptions]="{standalone: true}" #consegnaStat
-                      id="consegnaStat" value="2" name="inlineRadioOptions" id="inlineRadio2">
-                    <label class="form-check-label" for="inlineRadio2">Ritirato</label>
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" [(ngModel)]="upPC.STATO_idSTATO"
-                      [(ngModel)]="New_Movimento.STATO_idSTATO" #riparazione="ngModel"
-                      [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio1" value="4">
-                    <label class="form-check-label" for="inlineRadio1">Riparazione</label>
-                  </div>
-
-                </div>
-              </div>
-
-
+              <input class="form-check-input" type="radio" (click)="GetPC_status(3)" [(ngModel)]="upPC.STATO_idSTATO"
+                [(ngModel)]="New_Movimento.STATO_idSTATO" #guasto="ngModel" [ngModelOptions]="{standalone: true}"
+                name="inlineRadioOptions" id="inlineRadio3" value="4">
+              <label class="form-check-label" for="inlineRadio3">Guasto</label>
             </div>
           </div>
+          
           <div class="form-group">
             <label for="exampleFormControlSelect1">Computer</label>
             <select [(ngModel)]="New_Movimento.PC_idpc" #idAdmin="ngModel" [(ngModel)]="id_pc" class="form-control"
