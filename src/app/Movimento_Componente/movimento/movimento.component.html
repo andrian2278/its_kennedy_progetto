@@ -48,18 +48,18 @@
               <label class="form-check-label" for="inlineRadio2">Consegna</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" (click)="GetPC_status(this.id_query=3)"
+              <input class="form-check-input" type="radio" (click)="GetPC_status(3)"
                 [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #ritiro="ngModel"
                 [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio2" value="2">
               <label class="form-check-label" for="inlineRadio2">Ritiro</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" (click)="GetPC_status(id_query=3)"
+              <input class="form-check-input" type="radio" (click)="GetPC_status(3)"
                 [(ngModel)]="upPC.STATO_idSTATO" [(ngModel)]="New_Movimento.STATO_idSTATO" #guasto="ngModel"
                 [ngModelOptions]="{standalone: true}" name="inlineRadioOptions" id="inlineRadio1" value="4">
               <label class="form-check-label" for="inlineRadio1">Guasto</label>
             </div>
-            <button (click)="GetPC_status(id_query=4)" class="btn btn-link" type="button" data-toggle="collapse"
+            <button (click)="GetPC_status(4)" class="btn btn-link" type="button" data-toggle="collapse"
               data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
               Riparazione
             </button>
